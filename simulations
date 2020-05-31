@@ -154,8 +154,6 @@ print('Sample mean')
 with(linear$summaryStats,
      print(round(cbind(N, n, 'trueSE'=sqrt(sampMeanVar), 'estSE'=sqrt(sampMeanVarEst), sampMeanBias, 't'=sampMeanBias/(sqrt(sampMeanVar/nsims.lin))), 4)))
 
-save.image('newMethodSimulationsNewENVIRONMENT.R')
-
 #### Slighlty non-linear
 print('LESS LINEAR POPULATION')
 set.seed(123)
@@ -182,7 +180,6 @@ print('Sample mean')
 with(lesslinear$summaryStats,
      print(round(cbind(N, n, 'trueSE'=sqrt(sampMeanVar), 'estSE'=sqrt(sampMeanVarEst), sampMeanBias, 't'=sampMeanBias/(sqrt(sampMeanVar/nsims.lesslin))), 4)))
 
-save.image('newMethodSimulationsNewENVIRONMENT.R')
 
 #### Non-linear
 print('NONLINEAR POPULATION')
@@ -216,6 +213,3 @@ with(nonlinear$summaryStats,
 print('Sample mean')
 with(nonlinear$summaryStats,
      print(round(cbind(N, n, 'trueSE'=sqrt(sampMeanVar), 'estSE'=sqrt(sampMeanVarEst), sampMeanBias, 't'=sampMeanBias/(sqrt(sampMeanVar/nsims.nonlin))),4)))
-
-save.image('newMethodSimulationsNewENVIRONMENT.R')
-
