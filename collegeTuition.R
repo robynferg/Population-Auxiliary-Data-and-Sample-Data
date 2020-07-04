@@ -30,7 +30,7 @@ for(n in ns){
     # apply our estimator
     # with OLS
     newOLS = newEstimator(Xsample = collegeData[samp, vars], Ysample = collegeData$tuition17[samp],
-                       Xother = collegeData[-samp, vars], pred.fun = 'lm')
+                          Xother = collegeData[-samp, vars], pred.fun = 'lm')
     # with random forest
     newRF = newEstimator(Xsample = collegeData[samp, vars], Ysample = collegeData$tuition17[samp],
                          Xother = collegeData[-samp, vars], pred.fun = 'rf')
@@ -64,7 +64,7 @@ for(n in ns){
                        'sampMeanMean'=mean(temp$sampMean), 'sampMeanSE'=sd(temp$sampMean), 
                        'sampMeanSdEst'=mean(temp$sampMeanSdEst), 'sampMeanMSE'=mean((temp$sampMean-mu)^2))
   summaryStats = rbind(summaryStats, summary)
-  print(n)
+  #print(n)
 }
 
 
@@ -84,10 +84,10 @@ print(round(srs_table, 2))
 
 ## Appendix table
 srs_appendix = with(summaryStats, cbind(n,'newOLSSE'=newSEOLS, 'newOLSbias'=mu-newMeanOLS, 
-                                      'adjOLSSE'=regImpSE, 'adjOLSbias'=mu-regImpMean,
-                                      'nweRFSE'=newSERF, 'newRFbias'=mu-newMeanRF, 
-                                      'adjRFSE'=rfImpSE, 'adjRFbias'=mu-rfImpMean,
-                                      'sampMeanSE'=sampMeanSE, 'sampMeanBias'=mu-sampMeanMean))
+                                        'adjOLSSE'=regImpSE, 'adjOLSbias'=mu-regImpMean,
+                                        'nweRFSE'=newSERF, 'newRFbias'=mu-newMeanRF, 
+                                        'adjRFSE'=rfImpSE, 'adjRFbias'=mu-rfImpMean,
+                                        'sampMeanSE'=sampMeanSE, 'sampMeanBias'=mu-sampMeanMean))
 print(round(srs_appendix, 2))
 
 
@@ -145,30 +145,30 @@ for(n in ns){
                        'sampMeanMean'=mean(temp$sampMean), 'sampMeanSE'=sd(temp$sampMean), 
                        'sampMeanSdEst'=mean(temp$sampMeanSdEst), 'sampMeanMSE'=mean((temp$sampMean-mu)^2))
   summaryStats.nonprob = rbind(summaryStats.nonprob, summary)
-  print(n)
+  #print(n)
 }
 
 
 ## results of non-SRS
 nonsrs_table = with(summaryStats.nonprob, cbind(n, 'sampMean_TrueSE'=sampMeanSE, 'sampMean_EstSE'=sqrt(sampMeanSdEst), 
-                                     'sampMean_Bias'=mu-sampMeanMean, 'sampMean_t'=(mu-sampMeanMean)/(sampMeanSE/sqrt(nsims)),
-                                     'OLSadj_TrueSE'=regImpSE, 'OLSadj_EstSE'=regImpSdEst,
-                                     'OLSadj_Bias'=mu-regImpMean, 'OLSadj_t'=(mu-regImpMean)/(regImpSE/sqrt(nsims)),
-                                     'NewOLS_TrueSE'=newSEOLS, 'NewOLS_EstSE'=sqrt(newVarEstOLS),
-                                     'NewOLS_Bias'=mu-newMeanOLS, 'NewOLS_t'=(mu-newMeanOLS)/(newSEOLS/sqrt(nsims)),
-                                     'RFadj_TrueSE'=rfImpSE, 'RFadj_EstSE'=rfImpSdEst,
-                                     'RFadj_Bias'=mu-rfImpMean, 'RFadj_t'=(mu-rfImpMean)/(rfImpSE/sqrt(nsims)),
-                                     'NewRF_TrueSE'=newSERF, 'NewRF_EstSE'=sqrt(newVarEstRF),
-                                     'NewRF_Bias'=mu-newMeanRF, 'NewRF_t'=(mu-newMeanRF)/(newSERF/sqrt(nsims))))
+                                                'sampMean_Bias'=mu-sampMeanMean, 'sampMean_t'=(mu-sampMeanMean)/(sampMeanSE/sqrt(nsims)),
+                                                'OLSadj_TrueSE'=regImpSE, 'OLSadj_EstSE'=regImpSdEst,
+                                                'OLSadj_Bias'=mu-regImpMean, 'OLSadj_t'=(mu-regImpMean)/(regImpSE/sqrt(nsims)),
+                                                'NewOLS_TrueSE'=newSEOLS, 'NewOLS_EstSE'=sqrt(newVarEstOLS),
+                                                'NewOLS_Bias'=mu-newMeanOLS, 'NewOLS_t'=(mu-newMeanOLS)/(newSEOLS/sqrt(nsims)),
+                                                'RFadj_TrueSE'=rfImpSE, 'RFadj_EstSE'=rfImpSdEst,
+                                                'RFadj_Bias'=mu-rfImpMean, 'RFadj_t'=(mu-rfImpMean)/(rfImpSE/sqrt(nsims)),
+                                                'NewRF_TrueSE'=newSERF, 'NewRF_EstSE'=sqrt(newVarEstRF),
+                                                'NewRF_Bias'=mu-newMeanRF, 'NewRF_t'=(mu-newMeanRF)/(newSERF/sqrt(nsims))))
 print(round(nonsrs_table, 2))
 
 
 ## Appendix table
 nonsrs.nonprob = with(summaryStats.nonprob, cbind(n,'newOLSSE'=newSEOLS, 'newOLSbias'=mu-newMeanOLS, 
-                                      'adjOLSSE'=regImpSE,'adjOLSbias'=mu-regImpMean, 
-                                      'nweRFSE'=newSERF,'newRFbias'=mu-newMeanRF, 
-                                      'adjRFSE'=rfImpSE,'adjRFbias'=mu-rfImpMean, 
-                                      'sampMeanSE'=sampMeanSE, 'sampMeanbias'=mu-sampMeanMean))
+                                                  'adjOLSSE'=regImpSE,'adjOLSbias'=mu-regImpMean, 
+                                                  'nweRFSE'=newSERF,'newRFbias'=mu-newMeanRF, 
+                                                  'adjRFSE'=rfImpSE,'adjRFbias'=mu-rfImpMean, 
+                                                  'sampMeanSE'=sampMeanSE, 'sampMeanbias'=mu-sampMeanMean))
 print(round(nonsrs.nonprob, 2))
 
 
