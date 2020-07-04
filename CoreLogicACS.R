@@ -31,8 +31,8 @@ lm_inc = lm(outcome_inc~lotSize1+lotSize2+valueImp+propTaxImp, data=sampleData)
 summary(lm_inc)
 
 ### Apply new estimator using OLS
-N = 82499
-n = 4589
+N = 930+77910
+n = 930
 
 ## Number of people
 print('NUMBER OF PEOPLE')
