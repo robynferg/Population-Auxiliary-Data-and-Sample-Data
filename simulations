@@ -1,10 +1,11 @@
 #################################################
-### Simulation of estimation method
+### Simulations of estimation method presented
 ### in 'Unbaised Survey Estimation with Population Auxiliary Variables'
 ### by Ferg, Gagnon-Bartsch
 #################################################
 
 library(randomForest)
+
 
 #################################################
 ########## Functions ############################
@@ -57,7 +58,7 @@ simulateFunction = function(Xpopulation, Ypopulation, Ns, ns, nsims, methods, ve
           dataN = data.frame(XN, 'Y'=YN)
           rfmodel = randomForest(Y~., data=dataN[samp,])
           rfImp = mean(c(Y.samp, predict(rfmodel, dataN[-samp,])))
-          rfImpEstVar = (N-n)/(n*N) * 1/(n-2) * sum((dataN$Y[samp]-rfmodel$predicted)^2)
+          rfImpEstVar = (N-n)/(n*N) * 1/(n-2) * sum((dataN$Y[samp]-predict(rfmodel, dataN[samp,]))^2)
         }
         # attach to temp df
         temp = rbind(temp, data.frame('N'=N, 'n'=n, 'newOLS'=newOLS, 'newVarEstOLS'=newVarEstOLS,
@@ -142,7 +143,7 @@ nsims.lin = 10000
 X.lin = matrix(rnorm(max(Ns.lin)), ncol=1)
 Y.lin = 3 + 2*X.lin[,1] + rnorm(max(Ns.lin))
 
-linear = simulateFunction(X.lin, Y.lin, Ns.lin, ns.lin, nsims.lin, c('newOLS', 'OLSimp', 'sampMean'))
+linear = simulateFunction(X.lin, Y.lin, Ns.lin, ns.lin, nsims.lin, c('newOLS', 'OLSimp', 'sampMean'), verbose=FALSE)
 
 print('New method with OLS')
 with(linear$summaryStats, 
@@ -153,6 +154,8 @@ with(linear$summaryStats,
 print('Sample mean')
 with(linear$summaryStats,
      print(round(cbind(N, n, 'trueSE'=sqrt(sampMeanVar), 'estSE'=sqrt(sampMeanVarEst), sampMeanBias, 't'=sampMeanBias/(sqrt(sampMeanVar/nsims.lin))), 4)))
+
+#save.image('newMethodSimulationsNewENVIRONMENT.Rdata')
 
 #### Slighlty non-linear
 print('LESS LINEAR POPULATION')
@@ -168,7 +171,7 @@ Y.lesslin = ifelse(X.lesslin[,1]< -0.5, 0, 2*X.lesslin+.5) + rnorm(max(Ns.lessli
 
 plot(X.lesslin, Y.lesslin, pch=19, xlab="X", ylab="Y")
 
-lesslinear = simulateFunction(X.lesslin, Y.lesslin, Ns.lesslin, ns.lesslin, nsims.lesslin, c('newOLS', 'OLSimp', 'sampMean'))
+lesslinear = simulateFunction(X.lesslin, Y.lesslin, Ns.lesslin, ns.lesslin, nsims.lesslin, c('newOLS', 'OLSimp', 'sampMean'), verbose=FALSE)
 
 print('New method with OLS')
 with(lesslinear$summaryStats, 
@@ -180,10 +183,11 @@ print('Sample mean')
 with(lesslinear$summaryStats,
      print(round(cbind(N, n, 'trueSE'=sqrt(sampMeanVar), 'estSE'=sqrt(sampMeanVarEst), sampMeanBias, 't'=sampMeanBias/(sqrt(sampMeanVar/nsims.lesslin))), 4)))
 
+#save.image('newMethodSimulationsNewENVIRONMENT.Rdata')
 
 #### Non-linear
 print('NONLINEAR POPULATION')
-set.seed(2)
+set.seed(50)
 
 Ns.nonlin = 500
 ns.nonlin = c(25, 50, 100)
@@ -196,7 +200,7 @@ Y.nonlin = X.nonlin[,1]^3 + 2*sqrt(abs(X.nonlin[,2])) + X.nonlin[,1]*X.nonlin[,2
 nsims.nonlin = 10000
 
 nonlinear = simulateFunction(X.nonlin, Y.nonlin, Ns.nonlin, ns.nonlin, nsims.nonlin, 
-                             c('newRF', 'RFimp', 'newOLS', 'OLSimp', 'sampMean'))
+                             c('newRF', 'RFimp', 'newOLS', 'OLSimp', 'sampMean'), verbose=FALSE)
 
 print('New method with RF')
 with(nonlinear$summaryStats,
@@ -213,3 +217,6 @@ with(nonlinear$summaryStats,
 print('Sample mean')
 with(nonlinear$summaryStats,
      print(round(cbind(N, n, 'trueSE'=sqrt(sampMeanVar), 'estSE'=sqrt(sampMeanVarEst), sampMeanBias, 't'=sampMeanBias/(sqrt(sampMeanVar/nsims.nonlin))),4)))
+
+#save.image('newMethodSimulationsNewENVIRONMENT.Rdata')
+
